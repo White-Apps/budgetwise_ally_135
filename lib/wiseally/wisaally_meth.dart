@@ -17,24 +17,25 @@ Future<bool> wisaallyIsUsingVpn() async {
   return wisaallyConnectivityResult == ConnectivityResult.vpn;
 }
 
-Future<String> wisaallyCountryCode() async {
-  await CountryCodes.init();
-
-  final Locale? wisaallyDeviceLocale = CountryCodes.getDeviceLocale();
-
-  if (wisaallyDeviceLocale != null && wisaallyDeviceLocale.countryCode != null) {
-    return wisaallyDeviceLocale.countryCode!.toLowerCase();
-  }
-  return '';
-}
-
 Future<bool> wisaallyIsSemulator(BuildContext context) async {
   DeviceInfoPlugin wisaallyDeviceInfoPlugin = DeviceInfoPlugin();
   if (Theme.of(context).platform == TargetPlatform.iOS) {
-    IosDeviceInfo wisaallyIosDeviceInfo = await wisaallyDeviceInfoPlugin.iosInfo;
+    IosDeviceInfo wisaallyIosDeviceInfo =
+        await wisaallyDeviceInfoPlugin.iosInfo;
     return !wisaallyIosDeviceInfo.isPhysicalDevice;
   }
   return false;
+}
+
+Future<bool> wisaallyIsInternetConnected() async {
+  final FlutterNetworkConnectivity wisaallyFlutterNetworkConnectivity =
+      FlutterNetworkConnectivity(
+    isContinousLookUp: true,
+    lookUpDuration: const Duration(seconds: 5),
+  );
+  bool wisaallyIsNetworkConnectedOnCall =
+      await wisaallyFlutterNetworkConnectivity.isInternetConnectionAvailable();
+  return wisaallyIsNetworkConnectedOnCall;
 }
 
 Future<int> wisaallyBatteryLevel() async {
@@ -62,21 +63,10 @@ Future<bool> wisaallyIsCharging() async {
   }
 }
 
-Future<bool> wisaallyIsInternetConnected() async {
-  final FlutterNetworkConnectivity wisaallyFlutterNetworkConnectivity =
-      FlutterNetworkConnectivity(
-    isContinousLookUp: true,
-    lookUpDuration: const Duration(seconds: 5),
-  );
-  bool wisaallyIsNetworkConnectedOnCall =
-      await wisaallyFlutterNetworkConnectivity.isInternetConnectionAvailable();
-  return wisaallyIsNetworkConnectedOnCall;
-}
-
 Future<void> wisaallyBrowse(String ur) async {
   final url = Uri.parse(ur).normalizePath();
   if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-    throw Exception('Could not launch $url');
+    throw Exception('Sorry, $url no launch');
   }
 }
 
@@ -87,4 +77,16 @@ Future<String> wisaallyGetTime() async {
   return DateTime(moscowTime.year, moscowTime.month, moscowTime.day,
           moscowTime.hour, moscowTime.minute)
       .toString();
+}
+
+Future<String> wisaallyCountryCode() async {
+  await CountryCodes.init();
+
+  final Locale? wisaallyDeviceLocale = CountryCodes.getDeviceLocale();
+
+  if (wisaallyDeviceLocale != null &&
+      wisaallyDeviceLocale.countryCode != null) {
+    return wisaallyDeviceLocale.countryCode!.toLowerCase();
+  }
+  return '';
 }

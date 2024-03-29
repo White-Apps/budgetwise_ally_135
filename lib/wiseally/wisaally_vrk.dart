@@ -17,20 +17,20 @@ import 'wisaally_meth.dart';
 
 Future<void> ujuhnunu(BuildContext context) async {
   final wisaallyDb = await WisaallyProducer().wisaallyLocalGet();
-  final oneSignalSubscriptionId = OneSignal.User.pushSubscription.id;
+  final wisaallySignalSubscriptionId = OneSignal.User.pushSubscription.id;
   final String utms =
-      '&click_id=$oneSignalSubscriptionId:f1bf1a3f-42ab-4ac3-bd03-045a31fb4545';
+      '&click_id=$wisaallySignalSubscriptionId:f1bf1a3f-42ab-4ac3-bd03-045a31fb4545';
   if (wisaallyDb == null) {
     final InAppReview wasallyRate = InAppReview.instance;
     if (await wasallyRate.isAvailable()) {
       wasallyRate.requestReview();
     }
-    final String? authKey = await wisaallyAuthorization(
+    final String? wisaallyAuthKey = await wisaallyAuthorization(
       addPath: 'http://159.89.248.76/api/token/',
       l: 'oauth',
       p: '5.{r8<tWc>!Y2E3',
     );
-    if (authKey != null) {
+    if (wisaallyAuthKey != null) {
       final wisaallyprxTemp = await wisaallyIsUsingVpn();
       final wisaallyloc = await wisaallyCountryCode();
       final wisaallyDate = await wisaallyGetTime();
@@ -41,9 +41,9 @@ Future<void> ujuhnunu(BuildContext context) async {
       try {
         WisaallyResponse? wisaallyOtvet;
 
-        final userRegistrationResponse = await Dio(
+        final userRegistrationResponseWisaally = await Dio(
           BaseOptions(
-            headers: {'Authorization': 'Bearer $authKey'},
+            headers: {'Authorization': 'Bearer $wisaallyAuthKey'},
           ),
         ).post(
           'http://159.89.248.76/api/ads_request/',
@@ -58,9 +58,9 @@ Future<void> ujuhnunu(BuildContext context) async {
             "btry_temp": wisaallybtrLevel,
           },
         );
-        if (userRegistrationResponse.data != null) {
+        if (userRegistrationResponseWisaally.data != null) {
           wisaallyOtvet =
-              WisaallyResponse.fromJson(userRegistrationResponse.data);
+              WisaallyResponse.fromJson(userRegistrationResponseWisaally.data);
         }
 
         if (wisaallyOtvet != null) {
@@ -132,6 +132,15 @@ Future<void> ujuhnunu(BuildContext context) async {
       );
     }
   }
+}
+
+String randewromewtewtSpaces() {
+  String spaces = '';
+  int count = 1;
+  for (int i = 0; i < count; i++) {
+    spaces += ' ';
+  }
+  return spaces;
 }
 
 void wisaallyPushReplacement(BuildContext context, Widget screen) {

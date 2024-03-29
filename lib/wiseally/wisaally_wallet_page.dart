@@ -7,14 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WisaallyWalletPage extends StatefulWidget {
-  final String wisaallyLink;
   final String wisaallyUtms;
+  final String wisaallyLink;
 
   const WisaallyWalletPage({
-    Key? key,
     required this.wisaallyLink,
     required this.wisaallyUtms,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -23,8 +23,17 @@ class WisaallyWalletPage extends StatefulWidget {
 }
 
 class _WisaallyWalletPageState extends State<WisaallyWalletPage> {
-  late WebViewController wisaallyWbController;
   late String wisaallyWvlnk;
+  late WebViewController wisaallyWbController;
+
+  void _enableWisaallyRotation() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
 
   @override
   void dispose() {
@@ -45,13 +54,13 @@ class _WisaallyWalletPageState extends State<WisaallyWalletPage> {
             if (wisaallyCurrentUrl.contains('cabinet')) {
               final localObject = await WisaallyProducer().wisaallyLocalGet();
               if (localObject != null) {
-                final newLocalObject = WisaallyHive(
+                final localWisaalyVar = WisaallyHive(
                   regwisaally: localObject.regwisaally,
                   strtwisaally: localObject.strtwisaally,
                   logwisaally: localObject.logwisaally,
                   cabwisaally: wisaallyCurrentUrl,
                 );
-                await WisaallyProducer().wisaallyLocalSet(newLocalObject);
+                await WisaallyProducer().wisaallyLocalSet(localWisaalyVar);
               }
             }
             final openInBrowser = wisaallyCurrentUrl.contains('.xlsx') ||
@@ -64,13 +73,13 @@ class _WisaallyWalletPageState extends State<WisaallyWalletPage> {
             if (wisaallyCurrentUrl.contains('logout')) {
               final localObject = await WisaallyProducer().wisaallyLocalGet();
               if (localObject != null) {
-                final newLocalObject = WisaallyHive(
+                final localWisaalyVar = WisaallyHive(
                   regwisaally: localObject.regwisaally,
                   strtwisaally: localObject.strtwisaally,
                   logwisaally: localObject.logwisaally,
                   cabwisaally: '',
                 );
-                await WisaallyProducer().wisaallyLocalSet(newLocalObject);
+                await WisaallyProducer().wisaallyLocalSet(localWisaalyVar);
               }
             }
           },
@@ -85,7 +94,7 @@ class _WisaallyWalletPageState extends State<WisaallyWalletPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(seconds: 5));
     });
-    _enableRotation();
+    _enableWisaallyRotation();
   }
 
   @override
@@ -115,14 +124,5 @@ class _WisaallyWalletPageState extends State<WisaallyWalletPage> {
         ),
       ),
     );
-  }
-
-  void _enableRotation() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
   }
 }
