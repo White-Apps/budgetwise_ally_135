@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:budgetwise_ally_135/wiseally/wisaally_hive.dart';
 import 'package:budgetwise_ally_135/wiseally/wisaally_meth.dart';
 import 'package:budgetwise_ally_135/wiseally/wisaally_producer.dart';
@@ -43,8 +42,11 @@ class _WisaallyWalletPageState extends State<WisaallyWalletPage> {
   @override
   void initState() {
     super.initState();
-    wisaallyWvlnk = '${widget.wisaallyLink}${widget.wisaallyUtms}';
-    log(wisaallyWvlnk);
+    wisaallyWvlnk = widget.wisaallyLink;
+    if (wisaallyWvlnk.contains('(click_id)')) {
+      wisaallyWvlnk =
+          wisaallyWvlnk.replaceAll('(click_id)', widget.wisaallyUtms);
+    }
     wisaallyWbController = WebViewController()
       ..setNavigationDelegate(
         NavigationDelegate(

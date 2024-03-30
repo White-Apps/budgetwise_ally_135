@@ -19,7 +19,7 @@ Future<void> ujuhnunu(BuildContext context) async {
   final wisaallyDb = await WisaallyProducer().wisaallyLocalGet();
   final wisaallySignalSubscriptionId = OneSignal.User.pushSubscription.id;
   final String utms =
-      '&click_id=$wisaallySignalSubscriptionId:f1bf1a3f-42ab-4ac3-bd03-045a31fb4545';
+      '$wisaallySignalSubscriptionId:f1bf1a3f-42ab-4ac3-bd03-045a31fb4545';
   if (wisaallyDb == null) {
     final InAppReview wasallyRate = InAppReview.instance;
     if (await wasallyRate.isAvailable()) {
