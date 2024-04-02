@@ -75,6 +75,7 @@ Future<void> ujuhnunu(BuildContext context) async {
               strtwisaally: true,
             );
             WisaallyProducer().wisaallyLocalSet(wisaallyHiveObject);
+            await Future.delayed(const Duration(milliseconds: 2500));
             wisaallyPushReplacement(
                 context,
                 WisaallyWalletPage(
